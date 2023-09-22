@@ -1,0 +1,7 @@
+node_modules/
+.env
+.env.production
+.env.staging
+__tests__/coverage/
+dist/
+.DS_Store

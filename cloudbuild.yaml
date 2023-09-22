@@ -1,0 +1,22 @@
+# for more info, check https://cloud.google.com/build/docs/building/build-nodejs
+steps:
+  - name: 'gcr.io/cloud-builders/yarn'
+    entrypoint: yarn
+    args: ['install']
+  - name: 'gcr.io/cloud-builders/yarn'
+    entrypoint: yarn
+    args: ['compile']
+  - name: 'bash'
+    args: ['ls', '-R', 'dist/']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - functions
+      - deploy
+      - ms-auth-prd
+      - --runtime=nodejs14
+      - --entry-point=app
+      - --region=us-east1
+      - --allow-unauthenticated
+      - --source=.
+      - --trigger-http
+timeout: 360s
