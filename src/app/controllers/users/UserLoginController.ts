@@ -1,5 +1,6 @@
 import { FieldValidationError } from '@/app/errors/FieldValidationError';
-import { IGetUserByEmail } from '@/app/services/interfaces/user/IGetUserByEmail';
+import { makeGetUserByEmail } from '@/app/services/implementations/users/GetUserByEmail';
+import { IGetUserByEmail } from '@/app/services/interfaces/users/IGetUserByEmail';
 import { Hashing } from '@/app/utils/hashing';
 import { okResponse } from '@/app/utils/http';
 import { JWT } from '@/app/utils/jwt';
@@ -8,7 +9,7 @@ import { IController } from '../../interfaces/IController';
 import { HttpRequest } from '../../types/HttpRequest';
 import { HttpResponse } from '../../types/HttpResponse';
 
-export namespace SignInController {
+export namespace UserLoginController {
   export type Request = HttpRequest & {
     body: {
       email: string;
@@ -17,12 +18,14 @@ export namespace SignInController {
   };
 }
 
-// STILL MUST SEE THIS LOGIN LATER
+// STILL MUST SEE THIS LOGIN LATER TO INCLUDE CLUBS
 
-export class SignInController implements IController {
+export class UserLoginController implements IController {
   constructor(private readonly getUserByEmailService: IGetUserByEmail) {}
 
-  async handle(httpRequest: SignInController.Request): Promise<HttpResponse> {
+  async handle(
+    httpRequest: UserLoginController.Request,
+  ): Promise<HttpResponse> {
     const { email, password } = httpRequest.body;
 
     const { data } = await this.getUserByEmailService.run({
@@ -33,9 +36,13 @@ export class SignInController implements IController {
       const { password_hash, ...user } = data;
       const matches = await Hashing.match(password, password_hash);
 
+      const club_ids = data.clubs.map(club => club.id);
+
+      delete data.password_hash;
+
       if (matches) {
         const { access_token, refresh_token } = JWT.sign(
-          { id: user.id },
+          { id: user.id, admin: club_ids },
           user.role,
         );
 
@@ -48,3 +55,7 @@ export class SignInController implements IController {
     ]);
   }
 }
+
+export const makeUserLoginController = new UserLoginController(
+  makeGetUserByEmail,
+);

@@ -3,8 +3,9 @@ import { DataTypes, Model } from 'sequelize';
 import database from '.';
 import { IUser } from '../entities/IUser';
 import { Role } from '../enums/Role';
+import { Club } from './Club';
 
-export class User extends Model implements IUser {
+export class User extends Model<IUser> {
   id?: number;
   name?: string;
   role?: Role;
@@ -13,6 +14,8 @@ export class User extends Model implements IUser {
 
   created_at?: Date | string;
   updated_at?: Date | string;
+
+  clubs?: Club[];
 }
 
 User.init(
@@ -53,3 +56,13 @@ User.init(
     sequelize: database,
   },
 );
+
+User.belongsToMany(Club, {
+  through: 'club_user',
+  as: 'clubs',
+});
+
+Club.belongsToMany(User, {
+  through: 'club_user',
+  as: 'users',
+});

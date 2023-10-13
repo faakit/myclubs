@@ -5,53 +5,18 @@ import { HttpStatusCode } from '../enums/HttpStatusCode';
 import { Role } from '../enums/Role';
 import { AccessTokenData, JWT } from '../utils/jwt';
 
-export const authorization = (roles: Role[] = []) => (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): void => {
-  const { authorization } = req.headers;
+export const authorization =
+  (roles: Role[] = []) =>
+  (req: Request, res: Response, next: NextFunction): void => {
+    const { authorization } = req.headers;
 
-  if (!authorization) {
-    res.status(HttpStatusCode.BAD_REQUEST).json({
-      success: false,
-      details: [
-        {
-          field: 'authorization',
-          message: req.t('MISSING_PARAMS'),
-        },
-      ],
-    });
-
-    return;
-  }
-
-  const [prefix, token] = authorization.split(' ');
-
-  if (prefix.toLowerCase() !== 'bearer') {
-    res.status(HttpStatusCode.BAD_REQUEST).json({
-      success: false,
-      details: [
-        {
-          field: 'authorization',
-          message: req.t('INVALID_PARAMS'),
-        },
-      ],
-    });
-
-    return;
-  }
-
-  try {
-    const { id, role, admin, clubs } = JWT.verify<AccessTokenData>(token);
-
-    if (!roles.includes(role)) {
-      res.status(HttpStatusCode.FORBIDDEN).json({
+    if (!authorization) {
+      res.status(HttpStatusCode.BAD_REQUEST).json({
         success: false,
         details: [
           {
             field: 'authorization',
-            message: req.t('NOT_ALLOWED'),
+            message: req.t('MISSING_PARAMS'),
           },
         ],
       });
@@ -59,25 +24,58 @@ export const authorization = (roles: Role[] = []) => (
       return;
     }
 
-    req.headers.role = String(role);
-    req.headers.user_id = String(id);
-    req.headers.admin = admin.map(id => String(id));
-    req.headers.clubs = clubs.map(id => String(id));
+    const [prefix, token] = authorization.split(' ');
 
-    next();
-  } catch (error) {
-    if (error instanceof TokenExpiredError) {
-      res.status(401).json({
+    if (prefix.toLowerCase() !== 'bearer') {
+      res.status(HttpStatusCode.BAD_REQUEST).json({
         success: false,
         details: [
           {
             field: 'authorization',
-            message: req.t('EXPIRED_ACCESS_TOKEN'),
+            message: req.t('INVALID_PARAMS'),
           },
         ],
       });
+
       return;
     }
-    throw error;
-  }
-};
+
+    try {
+      const { id, role, admin, clubs } = JWT.verify<AccessTokenData>(token);
+
+      if (!roles.includes(role)) {
+        res.status(HttpStatusCode.FORBIDDEN).json({
+          success: false,
+          details: [
+            {
+              field: 'authorization',
+              message: req.t('NOT_ALLOWED'),
+            },
+          ],
+        });
+
+        return;
+      }
+
+      req.headers.role = String(role);
+      req.headers.user_id = String(id);
+      if (admin) req.headers.admin = admin.map(id => String(id));
+      if (clubs) req.headers.clubs = clubs.map(id => String(id));
+
+      next();
+    } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        res.status(401).json({
+          success: false,
+          details: [
+            {
+              field: 'authorization',
+              message: req.t('EXPIRED_ACCESS_TOKEN'),
+            },
+          ],
+        });
+        return;
+      }
+      throw error;
+    }
+  };

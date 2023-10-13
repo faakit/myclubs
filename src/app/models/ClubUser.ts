@@ -1,11 +1,11 @@
 import { DataTypes, Model } from 'sequelize';
 
 import database from '.';
-import { IClubStaff } from '../entities/IClubStaff';
+import { IClubUser } from '../entities/IClubUser';
 import { Club } from './Club';
 import { User } from './User';
 
-export class ClubStaff extends Model implements IClubStaff {
+export class ClubUser extends Model<IClubUser> {
   id?: number;
   club_id?: number;
   user_id?: number;
@@ -13,7 +13,7 @@ export class ClubStaff extends Model implements IClubStaff {
   created_at?: Date | string;
 }
 
-ClubStaff.init(
+ClubUser.init(
   {
     id: {
       allowNull: false,
@@ -47,7 +47,7 @@ ClubStaff.init(
     },
   },
   {
-    tableName: 'club_Staff',
+    tableName: 'club_user',
     sequelize: database,
   },
 );

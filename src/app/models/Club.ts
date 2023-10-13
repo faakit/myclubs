@@ -4,7 +4,7 @@ import { IClub } from '@/app/entities/IClub';
 
 import database from '.';
 
-export class Club extends Model implements IClub {
+export class Club extends Model<IClub> {
   id?: number;
   name?: string;
   updated_at?: Date | string;

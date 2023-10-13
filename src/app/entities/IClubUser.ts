@@ -1,4 +1,4 @@
-export type IClubStaff = {
+export type IClubUser = {
   id?: number;
   club_id?: number;
   user_id?: number;

@@ -22,10 +22,7 @@ export const errorHandler = (
   if (error instanceof ValidationError) {
     const details = error.details.map(detail => ({
       field: detail.context.label,
-      message:
-        detail.type === 'any.required'
-          ? req.t('MISSING_PARAMS')
-          : req.t('INVALID_PARAMS'),
+      message: detail.message,
     }));
 
     res.status(HttpStatusCode.BAD_REQUEST).json({

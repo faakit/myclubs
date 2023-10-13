@@ -2,16 +2,25 @@ import { NextFunction, Request, Response } from 'express';
 import { Schema } from 'joi';
 
 import { HttpStatusCode } from '../enums/HttpStatusCode';
+import { BasicHttpError } from '../errors/BasicHttpError';
 
 export type ValidationType = 'body' | 'headers' | 'params' | 'query';
 
-export const validator = (
+export const schemaValidator = (
   schema: Schema,
   type: ValidationType = 'body',
   allowUnknown = false,
   transform?: boolean,
 ) => {
   return (req: Request, res: Response, next: NextFunction): void => {
+    if (
+      req[type] === undefined ||
+      req[type] === null ||
+      Object.keys(req[type]).length === 0
+    ) {
+      throw new BasicHttpError('INVALID_PARAMS', HttpStatusCode.BAD_REQUEST);
+    }
+
     const { error, value } = schema.validate(req[type], {
       abortEarly: false,
       allowUnknown,

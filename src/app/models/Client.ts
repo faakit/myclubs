@@ -4,7 +4,7 @@ import { IClient } from '@/app/entities/IClient';
 
 import database from '.';
 
-export class Client extends Model implements IClient {
+export class Client extends Model<IClient> {
   id?: number;
   cpf?: string;
   f_name?: string;

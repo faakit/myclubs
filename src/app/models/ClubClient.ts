@@ -5,7 +5,7 @@ import { IClubClient } from '../entities/IClubClient';
 import { Client } from './Client';
 import { Club } from './Club';
 
-export class ClubClient extends Model implements IClubClient {
+export class ClubClient extends Model<IClubClient> {
   id?: number;
   club_id?: number;
   client_id?: number;
