@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { HttpStatusCode } from '@/app/enums/HttpStatusCode';
+import { Role } from '@/app/enums/Role';
 import { IController } from '@/app/interfaces/IController';
 
 export const expressControllerAdapter = (controller: IController) => {
@@ -17,7 +18,10 @@ export const expressControllerAdapter = (controller: IController) => {
     const { statusCode, body } = await controller.handle({
       headers: {
         ...(request.headers as Record<string, unknown>),
-        user_id: Number(request.headers.user_id),
+        role: request.headers.role as unknown as Role,
+        user_id: request.headers.user_id as unknown as string,
+        admin: request.headers.admin as unknown as string[],
+        clubs: request.headers.clubs as unknown as string[],
       },
       body: request.body,
       method: request.method,

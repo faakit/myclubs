@@ -1,3 +1,4 @@
+import { Role } from '../enums/Role';
 import { Phrase } from './Phrase';
 
 export namespace HttpRequest {
@@ -7,6 +8,10 @@ export namespace HttpRequest {
     page_size?: number;
   };
   export type Headers = {
+    role?: Role;
+    user_id?: string;
+    admin?: string[];
+    clubs?: string[];
     [key: string]: unknown;
   };
 }
