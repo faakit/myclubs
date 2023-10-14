@@ -20,6 +20,14 @@ export async function up(queryInterface: QueryInterface): Promise<void> {
       allowNull: false,
       type: DataTypes.STRING(11),
     },
+    email: {
+      allowNull: false,
+      type: DataTypes.STRING(255),
+    },
+    password_hash: {
+      allowNull: false,
+      type: DataTypes.STRING(255),
+    },
     created_at: {
       allowNull: true,
       type: DataTypes.DATE,

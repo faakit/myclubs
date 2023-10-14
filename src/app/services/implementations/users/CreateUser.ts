@@ -15,15 +15,17 @@ export class CreateUser implements ICreateUser {
   }: CreateUserParams): Promise<CreateUserData> {
     const password_hash = await Hashing.parse(password);
 
-    const data = await User.create(
-      {
-        name,
-        email,
-        password_hash,
-        role,
-      },
-      { transaction, raw: true },
-    );
+    const data = (
+      await User.create(
+        {
+          name,
+          email,
+          password_hash,
+          role,
+        },
+        { transaction },
+      )
+    ).toJSON();
 
     return { data };
   }

@@ -13,6 +13,7 @@ export const localeStrings = {
     INVALID_CREDENTIALS: 'Invalid credentials',
     ROUTE_INVALID_PARAMS: 'Invalid parameters in route',
     EMAIL_ALREADY_REGISTERED: 'Email already registered',
+    EMAIL_OR_CPF_ALREADY_REGISTERED: 'Email or CPF already registered',
   },
   'pt-Br': {
     INTERNAL_SERVER_ERROR: 'Algo deu errado.',
@@ -28,5 +29,6 @@ export const localeStrings = {
     INVALID_CREDENTIALS: 'Credenciais inválidas',
     ROUTE_INVALID_PARAMS: 'Parâmetros inválidos na rota',
     EMAIL_ALREADY_REGISTERED: 'Email já cadastrado',
+    EMAIL_OR_CPF_ALREADY_REGISTERED: 'Email ou CPF já cadastrado',
   },
 };

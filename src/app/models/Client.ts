@@ -7,8 +7,10 @@ import database from '.';
 export class Client extends Model<IClient> {
   id?: number;
   cpf?: string;
-  f_name?: string;
-  l_name?: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  password_hash?: string;
   updated_at?: Date | string;
   created_at?: Date | string;
 }
@@ -32,6 +34,14 @@ Client.init(
     cpf: {
       allowNull: false,
       type: DataTypes.STRING(11),
+    },
+    email: {
+      allowNull: false,
+      type: DataTypes.STRING(255),
+    },
+    password_hash: {
+      allowNull: false,
+      type: DataTypes.STRING(255),
     },
     created_at: {
       allowNull: true,

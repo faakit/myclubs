@@ -51,7 +51,7 @@ export class CreateClubController implements IController {
       if (data) {
         throw new BasicHttpError(
           'EMAIL_ALREADY_REGISTERED',
-          HttpStatusCode.BAD_REQUEST,
+          HttpStatusCode.UNPROCESSABLE_ENTITY,
         );
       }
 

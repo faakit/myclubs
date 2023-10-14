@@ -11,13 +11,15 @@ export class CreateClub implements ICreateClub {
   async run(params: CreateClubParams): Promise<CreateClubData> {
     const { club, first_admin_id, transaction } = params;
 
-    const data = await Club.create(
-      {
-        name: club.name,
-        active: true,
-      },
-      { transaction, raw: true },
-    );
+    const data = (
+      await Club.create(
+        {
+          name: club.name,
+          active: true,
+        },
+        { transaction },
+      )
+    ).toJSON();
 
     await ClubUser.create(
       {
@@ -26,7 +28,6 @@ export class CreateClub implements ICreateClub {
       },
       {
         transaction,
-        raw: true,
       },
     );
 

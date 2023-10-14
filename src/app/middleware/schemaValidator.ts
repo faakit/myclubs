@@ -10,7 +10,7 @@ export const schemaValidator = (
   schema: Schema,
   type: ValidationType = 'body',
   allowUnknown = false,
-  transform?: boolean,
+  transform = true,
 ) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (

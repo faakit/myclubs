@@ -18,8 +18,6 @@ export namespace UserLoginController {
   };
 }
 
-// STILL MUST SEE THIS LOGIN LATER TO INCLUDE CLUBS
-
 export class UserLoginController implements IController {
   constructor(private readonly getUserByEmailService: IGetUserByEmail) {}
 
