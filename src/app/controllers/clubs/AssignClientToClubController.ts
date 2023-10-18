@@ -3,7 +3,7 @@ import { HttpNotFoundError } from '@/app/errors/HttpNotFoundError';
 import { IController } from '@/app/interfaces/IController';
 import { makeAssignClientToClub } from '@/app/services/implementations/clubs/AssignClientToClub';
 import { makeTransactionCreator } from '@/app/services/implementations/TransactionCreator';
-import { IAssignClientToClub } from '@/app/services/interfaces/clients/IAssignClientToClub';
+import { IAssignClientToClub } from '@/app/services/interfaces/clubs/IAssignClientToClub';
 import { ITransactionCreator } from '@/app/services/interfaces/ITransactionCreator';
 import { HttpRequest } from '@/app/types/HttpRequest';
 import { HttpResponse } from '@/app/types/HttpResponse';
@@ -14,6 +14,7 @@ export namespace ClientSignUpController {
     body: {
       club_id: number;
       client_id: number;
+      card_number?: string;
     };
   };
 }
@@ -27,7 +28,7 @@ export class AssignClientToClubController implements IController {
   async handle(
     httpRequest: ClientSignUpController.Request,
   ): Promise<HttpResponse> {
-    const { club_id, client_id } = httpRequest.body;
+    const { club_id, card_number, client_id } = httpRequest.body;
     const { admin, role } = httpRequest.headers;
     const transaction = await this.transactionCreator.run();
 
@@ -43,6 +44,7 @@ export class AssignClientToClubController implements IController {
       const { data } = await this.assignClientToClub.run({
         club_id,
         client_id,
+        card_number,
         transaction,
       });
 

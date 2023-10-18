@@ -3,8 +3,9 @@ import { Transaction } from 'sequelize';
 import { IClubClient } from '@/app/entities/IClubClient';
 
 export type AssignClientToClubParams = {
-  client_id?: number;
-  club_id?: number;
+  client_id: number;
+  club_id: number;
+  card_number?: string;
   transaction?: Transaction;
 };
 

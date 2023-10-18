@@ -11,3 +11,9 @@ export const createClubSchema = Joi.object({
     name: Joi.string().max(255).trim().required(),
   },
 });
+
+export const assignClientToClubSchema = Joi.object({
+  client_id: Joi.number().required(),
+  club_id: Joi.number().required(),
+  card_number: Joi.string().max(255).trim().optional(),
+});

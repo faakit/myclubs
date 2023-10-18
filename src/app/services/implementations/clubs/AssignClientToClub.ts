@@ -6,11 +6,11 @@ import {
   AssignClientToClubData,
   AssignClientToClubParams,
   IAssignClientToClub,
-} from '../../interfaces/clients/IAssignClientToClub';
+} from '../../interfaces/clubs/IAssignClientToClub';
 
 export class AssignClientToClub implements IAssignClientToClub {
   async run(params: AssignClientToClubParams): Promise<AssignClientToClubData> {
-    const { client_id, club_id, transaction } = params;
+    const { client_id, club_id, card_number, transaction } = params;
 
     const clientExists = await Client.findOne({
       where: {
@@ -27,6 +27,8 @@ export class AssignClientToClub implements IAssignClientToClub {
       {
         client_id,
         club_id,
+        active: true,
+        card_number: card_number || String(client_id),
       },
       { transaction },
     );

@@ -6,7 +6,7 @@ import { makeCreateClubController } from '@/app/controllers/clubs/CreateClubCont
 import { Role } from '@/app/enums/Role';
 import { authorization } from '@/app/middleware/authorization';
 import { schemaValidator } from '@/app/middleware/schemaValidator';
-import { assignClientToClubSchema } from '@/app/schemas/clientSchemas';
+import { assignClientToClubSchema } from '@/app/schemas/clubSchemas';
 import { createClubSchema } from '@/app/schemas/clubSchemas';
 
 export const clubRoutes = Router();

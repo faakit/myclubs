@@ -11,8 +11,3 @@ export const clientSignUpSchema = Joi.object({
   password_confirmation: Joi.string().valid(Joi.ref('password')).required(),
   cpf: extendedJoi.document().cpf().required(),
 });
-
-export const assignClientToClubSchema = Joi.object({
-  client_id: Joi.number().required(),
-  club_id: Joi.number().required(),
-});

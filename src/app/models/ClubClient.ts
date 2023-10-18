@@ -7,9 +7,9 @@ import { Club } from './Club';
 
 export class ClubClient extends Model<IClubClient> {
   id?: number;
-  club_id?: number;
-  client_id?: number;
-  card_number?: string;
+  club_id: number;
+  client_id: number;
+  card_number: string;
   active?: boolean;
   updated_at?: Date | string;
   created_at?: Date | string;
